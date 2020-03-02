@@ -13,7 +13,7 @@ data "template_file" "public_cidrsubnet" {
 
   template = "$${cidrsubnet(vpc_cidr,8,current_count)}"
 
-  vars {
+  vars = {
     vpc_cidr      = "${data.external.configuration.result.vpc_cidr_range}"
     current_count = "${count.index*2+1}"
   }
@@ -24,7 +24,7 @@ data "template_file" "private_cidrsubnet" {
 
   template = "$${cidrsubnet(vpc_cidr,8,current_count)}"
 
-  vars {
+  vars = {
     vpc_cidr      = "${data.external.configuration.result.vpc_cidr_range}"
     current_count = "${count.index*2}"
   }
