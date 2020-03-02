@@ -6,15 +6,15 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
 variable "aws_networking_bucket" {
-  default = "ddt-networking"
+  default = "ddt-networking-nortech"
 }
 
 variable "aws_application_bucket" {
-  default = "ddt-application"
+  default = "ddt-application-nortech"
 }
 
 variable "aws_dynamodb_table" {
-  default = "ddt-tfstatelock"
+  default = "ddt-tfstatelock-nortech"
 }
 
 ##################################################################################
@@ -33,7 +33,7 @@ provider "aws" {
 data "template_file" "application_bucket_policy" {
   template = "${file("templates/bucket_policy.tpl")}"
 
-  vars {
+  vars = {
     read_only_user_arn   = "${aws_iam_user.networking.arn}"
     full_access_user_arn = "${aws_iam_user.application.arn}"
     s3_bucket            = "${var.aws_application_bucket}"
@@ -43,7 +43,7 @@ data "template_file" "application_bucket_policy" {
 data "template_file" "network_bucket_policy" {
   template = "${file("templates/bucket_policy.tpl")}"
 
-  vars {
+  vars = {
     read_only_user_arn   = "${aws_iam_user.application.arn}"
     full_access_user_arn = "${aws_iam_user.networking.arn}"
     s3_bucket            = "${var.aws_networking_bucket}"
@@ -53,7 +53,7 @@ data "template_file" "network_bucket_policy" {
 data "template_file" "networking_policy" {
   template = "${file("templates/user_policy.tpl")}"
 
-  vars {
+  vars = {
     s3_rw_bucket          = "${var.aws_networking_bucket}"
     s3_ro_bucket          = "${var.aws_application_bucket}"
     dynamodb_table_arn = "${aws_dynamodb_table.terraform_statelock.arn}"
@@ -63,7 +63,7 @@ data "template_file" "networking_policy" {
 data "template_file" "application_policy" {
   template = "${file("templates/user_policy.tpl")}"
 
-  vars {
+  vars = {
     s3_rw_bucket          = "${var.aws_application_bucket}"
     s3_ro_bucket          = "${var.aws_networking_bucket}"
     dynamodb_table_arn = "${aws_dynamodb_table.terraform_statelock.arn}"

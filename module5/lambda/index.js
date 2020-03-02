@@ -11,7 +11,7 @@ exports.handler = (event, context, callback) => {
                 ':p': {S: event.headers["querytext"]},
             },
             KeyConditionExpression: 'ProjectEnvironment = :p',
-            TableName: 'ddt-datasource'
+            TableName: 'ddt-datasource-nortech'
         };
 
     ddb.query(params, function(err, data) {

@@ -4,7 +4,7 @@ variable "network_remote_state_key" {
 }
 
 variable "network_remote_state_bucket" {
-  default = "ddt-networking"
+  default = "ddt-networking-nortech"
 }
 
 variable "aws_access_key" {}
